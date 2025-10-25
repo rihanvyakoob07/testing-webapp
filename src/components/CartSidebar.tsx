@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { CartItem } from "@/types/product";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Minus, Plus, Trash2 } from "lucide-react
 
 interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  cartItems: CartItem[];
+  cartItems: CartItem[
   onUpdateQuantity: (id: string, quantity: number) => void;
   onRemoveItem: (id: string) => void;
 }
