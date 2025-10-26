@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { CartItem } from "@/types/product";
-import { Minus, Plus, Trash2 } from "lucide-react
+import { Minus, Plus, Trash2 } from "lucide-react"; // Fix: Added closing parenthesis
 
 interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  cartItems: CartItem[
+  cartItems: CartItem[]; // Fix: Corrected type definition
   onUpdateQuantity: (id: string, quantity: number) => void;
   onRemoveItem: (id: string) => void;
 }
@@ -52,7 +52,12 @@ const CartSidebar = ({
                         size="icon"
                         variant="outline"
                         className="h-7 w-7"
-                        onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => {
+                          if (item.quantity > 1) { // Fix: Added validation
+                            onUpdateQuantity(item.id, item.quantity - 1);
+                          }
+                        }}
+                        disabled={item.quantity === 1} // Fix: Disabled when quantity is 1
                       >
                         <Minus className="h-3 w-3" />
                       </Button>
