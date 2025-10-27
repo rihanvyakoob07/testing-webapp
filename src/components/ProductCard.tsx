@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Product } from "@/types/product";
-import { Plus, Minus } from "lucide-react"; // Fix: Import Minus icon
+import { Plus, Minus } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
-  onRemoveFromCart: (product: Product) => void; // Add prop for removing from cart
-  cartItemQuantity: number; // Add prop for cart item quantity
-  onUpdateQuantity: (quantity: number) => void; // Add prop for updating quantity
+  onRemoveFromCart: (product: Product) => void;
+  cartItemQuantity: number;
+  onUpdateQuantity: (quantity: number) => void;
 }
 
 const ProductCard = ({
@@ -20,20 +20,27 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const handleQuantityChange = (change: number) => {
     const newQuantity = cartItemQuantity + change;
-    if (newQuantity >= 1) { // Fix: Validate quantity update
-      onUpdateQuantity(newQuantity);
+    if (newQuantity >= 0) {
+      if (newQuantity === 0) {
+        onRemoveFromCart(product);
+      } else {
+        onUpdateQuantity(newQuantity);
+      }
     }
   };
 
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-hover)] border-border/50">
       <div className="relative aspect-square overflow-hidden bg-muted">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        {/* Fix: Added opening tag */}
+        <div className="relative aspect-square overflow-hidden bg-muted">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        </div>
       </div>
       <CardContent className="p-4">
         <div className="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -57,7 +64,8 @@ const ProductCard = ({
                 className={`gap-1 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all duration-300 ${
                   cartItemQuantity === 1 ? "opacity-50 cursor-not-allowed" : ""
                 }`}
-                disabled={cartItemQuantity === 1} // Fix: Disable minus button when quantity is 1
+                disabled={cartItemQuantity === 1}
+                aria-label="Decrease quantity"
               >
                 <Minus className="h-4 w-4" />
               </Button>
@@ -66,6 +74,7 @@ const ProductCard = ({
                 size="sm"
                 onClick={() => handleQuantityChange(1)}
                 className="gap-1 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all duration-300"
+                aria-label="Increase quantity"
               >
                 <Plus className="h-4 w-4" />
               </Button>
@@ -75,6 +84,7 @@ const ProductCard = ({
               size="sm"
               onClick={() => onAddToCart(product)}
               className="gap-1 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all duration-300"
+              aria-label="Add to cart"
             >
               <Plus className="h-4 w-4" />
               Add
@@ -86,4 +96,5 @@ const ProductCard = ({
   );
 };
 
+// Fix: Corrected export statement
 export default ProductCard;

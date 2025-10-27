@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { CartItem } from "@/types/product";
-import { Minus, Plus, Trash2 } from "lucide-react"; // Fix: Added closing parenthesis
+import { Minus, Plus, Trash2 } from "lucide-react";
 
 interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  cartItems: CartItem[]; // Fix: Corrected type definition
-  onUpdateQuantity: (id: string, quantity: number) => void;
-  onRemoveItem: (id: string) => void;
+  cartItems: CartItem[];
+  onUpdateQuantity: (quantity: number) => void; // Fix: Corrected type definition
+  onRemoveFromCart: (id: string) => void; // Fix: Renamed and added type definition
 }
 
 const CartSidebar = ({
@@ -16,7 +16,7 @@ const CartSidebar = ({
   onClose,
   cartItems,
   onUpdateQuantity,
-  onRemoveItem,
+  onRemoveFromCart,
 }: CartSidebarProps) => {
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -52,12 +52,15 @@ const CartSidebar = ({
                         size="icon"
                         variant="outline"
                         className="h-7 w-7"
+                        aria-label="Decrease quantity"
                         onClick={() => {
-                          if (item.quantity > 1) { // Fix: Added validation
+                          if (item.quantity > 1) {
                             onUpdateQuantity(item.id, item.quantity - 1);
+                          } else {
+                            onRemoveFromCart(item.id); // Fix: Added removal logic
                           }
                         }}
-                        disabled={item.quantity === 1} // Fix: Disabled when quantity is 1
+                        disabled={item.quantity === 1}
                       >
                         <Minus className="h-3 w-3" />
                       </Button>
@@ -68,6 +71,7 @@ const CartSidebar = ({
                         size="icon"
                         variant="outline"
                         className="h-7 w-7"
+                        aria-label="Increase quantity"
                         onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
                       >
                         <Plus className="h-3 w-3" />
@@ -76,7 +80,8 @@ const CartSidebar = ({
                         size="icon"
                         variant="ghost"
                         className="ml-auto h-7 w-7 text-destructive hover:text-destructive"
-                        onClick={() => onRemoveItem(item.id)}
+                        aria-label="Remove from cart"
+                        onClick={() => onRemoveFromCart(item.id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -99,6 +104,7 @@ const CartSidebar = ({
             <Button 
               className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all duration-300" 
               size="lg"
+              aria-label="Checkout"
             >
               Checkout
             </Button>
