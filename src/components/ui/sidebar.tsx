@@ -1,8 +1,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
-//@ts-expect-error
-import { PanelLeft } from "lucide-react";
+import { PanelLeft } from "lucide-react"; // Fix: Removed //@ts-expect-error
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -129,13 +128,21 @@ const SidebarProvider = React.forwardRef<
 });
 SidebarProvider.displayName = "SidebarProvider";
 
+interface CartItem {
+  id: string;
+  quantity: number;
+}
+
 const CartSidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(({ className, children, ...props }, ref) => {
   const { isMobile } = useSidebar();
-  const [cartItems, setCartItems] = React.useState<{ id: string; quantity: number }[]>([]);
+  const [cartItems, setCartItems] = React.useState<CartItem[]>([]);
   const [total, setTotal] = React.useState(0);
 
   const handleQuantityChange = (id: string, quantity: number) => {
-    if (quantity < 1) return;
+    if (quantity < 1) {
+      // Fix: Prevent quantity from going below 1
+      quantity = 1;
+    }
     setCartItems((prevItems) =>
       prevItems.map((item) => (item.id === id ? { ...item, quantity } : item)),
     );
@@ -143,6 +150,12 @@ const CartSidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">
 
   const handleRemoveItem = (id: string) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
+  const handleDecrementQuantity = (id: string, quantity: number) => {
+    if (quantity > 1) {
+      handleQuantityChange(id, quantity - 1);
+    }
   };
 
   React.useEffect(() => {
@@ -160,12 +173,19 @@ const CartSidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">
         {cartItems.map((item) => (
           <li key={item.id}>
             <span>{item.id}</span>
+            <Button
+              onClick={() => handleDecrementQuantity(item.id, item.quantity)}
+              disabled={item.quantity <= 1}
+            >
+              -
+            </Button>
             <Input
               type="number"
               value={item.quantity}
               onChange={(e) => handleQuantityChange(item.id, Number(e.target.value))}
               min={1}
             />
+            <Button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>+</Button>
             <Button onClick={() => handleRemoveItem(item.id)}>Remove</Button>
           </li>
         ))}
@@ -438,12 +458,3 @@ SidebarGroupContent.displayName = "SidebarGroupContent";
 const SidebarMenu = React.forwardRef<HTMLUListElement, React.ComponentProps<"ul">>(({ className, ...props }, ref) => (
   <ul ref={ref} data-sidebar="menu" className={cn("flex w-full min-w-0 flex-col gap-1", className)} {...props} />
 ));
-SidebarMenu.displayName = "SidebarMenu";
-
-const SidebarMenuItem = React.forwardRef<HTMLLIElement, React.ComponentProps<"li">>(({ className, ...props }, ref) => (
-  <li ref={ref} data-sidebar="menu-item" className={cn("group/menu-item relative", className)} {...props} />
-));
-SidebarMenuItem.displayName = "SidebarMenuItem";
-
-const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover
