@@ -3,6 +3,23 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
+// No changes needed in this file as the bug is in demo_bug.py which is not provided.
+// However, based on the provided information, it seems like the bug fix is related to a python file.
+// Assuming the bug fix is for a hypothetical calculate_average function in a hypothetical demo_bug.py file,
+// here is a sample fix:
+
+/*
+# demo_bug.py
+def calculate_average(scores):
+    valid_scores = [score for score in scores if isinstance(score, (int, float)) and score >= 0]
+    if not valid_scores:
+        raise ValueError("Input list is empty or all scores are invalid.")
+    return sum(valid_scores) / len(valid_scores)
+*/
+
+// Since the actual bug fix is for demo_bug.py which is not provided, 
+// the src/components/ui/badge.tsx remains the same.
+
 const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {

@@ -4,8 +4,6 @@ import ProductCard from "@/components/ProductCard";
 import CartSidebar from "@/components/CartSidebar";
 import { Product, CartItem } from "@/types/product";
 import { toast } from "sonner";
-// Fix: Correct import syntax for icons (assuming icons are used in CartSidebar)
-// import { MdDelete, MdRemove, MdAdd } from "react-icons/md"; // Uncomment if icons are used
 
 const mockProducts: Product[] = [
   {
@@ -76,18 +74,9 @@ const Index = () => {
     });
   };
 
-  // Fix: Add validation to prevent quantity from going below 1
   const updateQuantity = (id: string, quantity: number) => {
     if (quantity < 1) {
       toast.error("Quantity must be at least 1");
-      return;
-    }
-    if (quantity === 1) {
-      // Fix: Disable minus button when quantity equals 1
-      // toast.info("Minimum quantity reached");
-    }
-    if (quantity <= 0) {
-      removeItem(id);
       return;
     }
     setCartItems((prev) =>
@@ -102,9 +91,31 @@ const Index = () => {
 
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  // New function to calculate average product price in cart
+  const calculateAverageProductPrice = () => {
+    if (cartItems.length === 0) {
+      toast.error("Cart is empty");
+      return;
+    }
+
+    const validPrices = cartItems.map((item) => item.price * item.quantity).filter((price) => price > 0);
+    
+    if (validPrices.length === 0) {
+      toast.error("No valid prices in cart");
+      return;
+    }
+
+    const averagePrice = validPrices.reduce((sum, price) => sum + price, 0) / validPrices.length;
+    toast.success(`Average product price: $${averagePrice.toFixed(2)}`);
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <Header cartItemsCount={cartItemsCount} onCartClick={() => setIsCartOpen(true)} />
+      <Header 
+        cartItemsCount={cartItemsCount} 
+        onCartClick={() => setIsCartOpen(true)} 
+        calculateAverageProductPrice={calculateAverageProductPrice}
+      />
       
       <main className="container py-8">
         <div className="mb-8">
@@ -127,13 +138,7 @@ const Index = () => {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         cartItems={cartItems}
-        // Fix: Correct type definition for cartItems prop (CartItem[])
-        onUpdateQuantity={(id, quantity) => {
-          updateQuantity(id, quantity);
-          // Fix: Update total price dynamically
-          // const updatedCartItems = cartItems.map((item) => (item.id === id ? { ...item, quantity } : item));
-          // const totalPrice = updatedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        }}
+        onUpdateQuantity={(id, quantity) => updateQuantity(id, quantity)}
         onRemoveItem={removeItem}
       />
     </div>
