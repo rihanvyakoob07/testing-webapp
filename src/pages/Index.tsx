@@ -4,8 +4,6 @@ import ProductCard from "@/components/ProductCard";
 import CartSidebar from "@/components/CartSidebar";
 import { Product, CartItem } from "@/types/product";
 import { toast } from "sonner";
-// Fix: Correct import syntax for icons (assuming icons are used in CartSidebar)
-// import { MdDelete, MdRemove, MdAdd } from "react-icons/md"; // Uncomment if icons are used
 
 const mockProducts: Product[] = [
   {
@@ -76,18 +74,9 @@ const Index = () => {
     });
   };
 
-  // Fix: Add validation to prevent quantity from going below 1
   const updateQuantity = (id: string, quantity: number) => {
     if (quantity < 1) {
       toast.error("Quantity must be at least 1");
-      return;
-    }
-    if (quantity === 1) {
-      // Fix: Disable minus button when quantity equals 1
-      // toast.info("Minimum quantity reached");
-    }
-    if (quantity <= 0) {
-      removeItem(id);
       return;
     }
     setCartItems((prev) =>
@@ -101,6 +90,28 @@ const Index = () => {
   };
 
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const calculateAverage = (scores: number[]) => {
+    // Fix: Validate input and handle edge cases
+    if (scores.length === 0) {
+      throw new Error("Input list is empty");
+    }
+
+    const validScores = scores.filter((score) => score >= 0);
+    if (validScores.length === 0) {
+      throw new Error("All scores are invalid (negative or zero)");
+    }
+
+    return validScores.reduce((sum, score) => sum + score, 0) / validScores.length;
+  };
+
+  // Example usage of calculateAverage
+  try {
+    const scores = [10, 20, 30, -5, 0];
+    const average = calculateAverage(scores);
+    console.log("Average score:", average);
+  } catch (error) {
+    console.error("Error calculating average:", error.message);
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -127,12 +138,8 @@ const Index = () => {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         cartItems={cartItems}
-        // Fix: Correct type definition for cartItems prop (CartItem[])
         onUpdateQuantity={(id, quantity) => {
           updateQuantity(id, quantity);
-          // Fix: Update total price dynamically
-          // const updatedCartItems = cartItems.map((item) => (item.id === id ? { ...item, quantity } : item));
-          // const totalPrice = updatedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
         }}
         onRemoveItem={removeItem}
       />
