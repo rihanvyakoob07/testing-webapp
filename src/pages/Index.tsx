@@ -4,8 +4,7 @@ import ProductCard from "@/components/ProductCard";
 import CartSidebar from "@/components/CartSidebar";
 import { Product, CartItem } from "@/types/product";
 import { toast } from "sonner";
-// Fix: Correct import syntax for icons (assuming icons are used in CartSidebar)
-// import { MdDelete, MdRemove, MdAdd } from "react-icons/md"; // Uncomment if icons are used
+import { MdDelete, MdRemove, MdAdd } from "react-icons/md";
 
 const mockProducts: Product[] = [
   {
@@ -76,18 +75,10 @@ const Index = () => {
     });
   };
 
-  // Fix: Add validation to prevent quantity from going below 1
+  // Fix: Add validation to prevent quantity from going below 1 and disable minus button when quantity equals 1
   const updateQuantity = (id: string, quantity: number) => {
     if (quantity < 1) {
       toast.error("Quantity must be at least 1");
-      return;
-    }
-    if (quantity === 1) {
-      // Fix: Disable minus button when quantity equals 1
-      // toast.info("Minimum quantity reached");
-    }
-    if (quantity <= 0) {
-      removeItem(id);
       return;
     }
     setCartItems((prev) =>
@@ -100,7 +91,16 @@ const Index = () => {
     toast.success("Removed from cart");
   };
 
+  const decrementQuantity = (id: string) => {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: Math.max(item.quantity - 1, 1) } : item
+      )
+    );
+  };
+
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <div className="min-h-screen bg-background">
@@ -127,14 +127,12 @@ const Index = () => {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         cartItems={cartItems}
-        // Fix: Correct type definition for cartItems prop (CartItem[])
-        onUpdateQuantity={(id, quantity) => {
-          updateQuantity(id, quantity);
-          // Fix: Update total price dynamically
-          // const updatedCartItems = cartItems.map((item) => (item.id === id ? { ...item, quantity } : item));
-          // const totalPrice = updatedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        }}
+        onUpdateQuantity={updateQuantity}
         onRemoveItem={removeItem}
+        onDecrement={(id) => {
+          decrementQuantity(id);
+        }}
+        totalPrice={totalPrice}
       />
     </div>
   );
