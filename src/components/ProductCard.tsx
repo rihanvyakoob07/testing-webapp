@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Product } from "@/types/product";
-import { Plus, Minus } from "lucide-react"; // Fix: Import Minus icon
+import { Plus, Minus } from "@/components/icons"; // Fix: Corrected import statement for icons
 
 interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
-  onRemoveFromCart: (product: Product) => void; // Add prop for removing from cart
-  cartItemQuantity: number; // Add prop for cart item quantity
-  onUpdateQuantity: (quantity: number) => void; // Add prop for updating quantity
+  onRemoveFromCart: (product: Product) => void; 
+  cartItemQuantity: number; 
+  onUpdateQuantity: (quantity: number) => void; 
 }
 
 const ProductCard = ({
@@ -20,7 +20,7 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const handleQuantityChange = (change: number) => {
     const newQuantity = cartItemQuantity + change;
-    if (newQuantity >= 1) { // Fix: Validate quantity update
+    if (newQuantity >= 1) { 
       onUpdateQuantity(newQuantity);
     }
   };
@@ -57,7 +57,7 @@ const ProductCard = ({
                 className={`gap-1 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all duration-300 ${
                   cartItemQuantity === 1 ? "opacity-50 cursor-not-allowed" : ""
                 }`}
-                disabled={cartItemQuantity === 1} // Fix: Disable minus button when quantity is 1
+                disabled={cartItemQuantity === 1} 
               >
                 <Minus className="h-4 w-4" />
               </Button>
