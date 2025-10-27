@@ -78,15 +78,11 @@ const Index = () => {
 
   // Fix: Add validation to prevent quantity from going below 1
   const updateQuantity = (id: string, quantity: number) => {
-    if (quantity < 1) {
-      toast.error("Quantity must be at least 1");
+    if (quantity < 0) {
+      toast.error("Invalid quantity");
       return;
     }
-    if (quantity === 1) {
-      // Fix: Disable minus button when quantity equals 1
-      // toast.info("Minimum quantity reached");
-    }
-    if (quantity <= 0) {
+    if (quantity === 0) {
       removeItem(id);
       return;
     }
@@ -118,7 +114,13 @@ const Index = () => {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {mockProducts.map((product) => (
-            <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
+            <ProductCard 
+              key={product.id} 
+              product={product} 
+              onAddToCart={addToCart} 
+              onUpdateQuantity={(quantity) => updateQuantity(product.id, quantity)}
+              onRemoveFromCart={() => removeItem(product.id)}
+            />
           ))}
         </div>
       </main>
