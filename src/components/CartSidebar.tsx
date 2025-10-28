@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { CartItem } from "@/types/product";
-import { Minus, Plus, Trash2 } from "lucide-react"
+import { Minus, Plus, Trash2 } from "lucide-react";
 
 interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
   cartItems: CartItem[];
-  onUpdateQuantitity: number) => void; // Fix: Corrected type definition
-  onRemoveFromCart: (id: string) => void; // Fix: Renamed and added type definition
+  onUpdateQuantity: (id: string, quantity: number) => void;
+  onRemoveFromCart: (id: string) => void;
 }
 
 const CartSidebar = ({
@@ -28,7 +28,7 @@ const CartSidebar = ({
         </SheetHeader>
         
         <div className="flex-1 overflow-y-auto py-4">
-          {cartItems.length === 0 ? (
+          {cartItems.length > 0 ? (
             <div className="space-y-4">
               {cartItems.map((item) => (
                 <div
@@ -53,7 +53,7 @@ const CartSidebar = ({
                           if (item.quantity > 1) {
                             onUpdateQuantity(item.id, item.quantity - 1);
                           } else {
-                            onRemoveFromCart(item.id); // Fix: Added removal logic
+                            onRemoveFromCart(item.id); 
                           }
                         }}
                         disabled={item.quantity === 1}
@@ -79,19 +79,21 @@ const CartSidebar = ({
                         aria-label="Remove from cart"
                         onClick={() => onRemoveFromCart(item.id)}
                       >
-                        <Trash2 className="h-4 w-4" 
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+          ) : (
+            <p>Your cart is empty</p>
           )}
         </div>
 
         {cartItems.length > 0 && (
           <div className="space-y-4 border-t border-border pt-4">
-            <className="flex items-center justify-between text-lg font-bold">
+            <div className="flex items-center justify-between text-lg font-bold">
               <span>Total:</span>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 ${total.toFixed(2)}
