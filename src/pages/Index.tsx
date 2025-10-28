@@ -129,14 +129,8 @@ const Index = () => {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         cartItems={cartItems}
-        // Fix: Correct type definition for cartItems prop (CartItem[])
-        onUpdateQuantity={(id, quantity) => {
-          updateQuantity(id, quantity);
-          // Fix: Update total price dynamically
-          // const updatedCartItems = cartItems.map((item) => (item.id === id ? { ...item, quantity } : item));
-          // const totalPrice = updatedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        }}
-        onRemoveItem={removeItem}
+        onUpdateQuantity={(id: string, quantity: number) => updateQuantity(id, quantity)}
+        onRemoveItem={(id: string) => removeItem(id)}
       />
     </div>
   );
