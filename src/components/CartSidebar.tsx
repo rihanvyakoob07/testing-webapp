@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { CartItem } from "@/types/product";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Minus, Plus, Trash2 } from "lucide-react"
 
 interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
   cartItems: CartItem[];
-  onUpdateQuantity: (quantity: number) => void; // Fix: Corrected type definition
+  onUpdateQuantitity: number) => void; // Fix: Corrected type definition
   onRemoveFromCart: (id: string) => void; // Fix: Renamed and added type definition
 }
 
@@ -29,10 +29,6 @@ const CartSidebar = ({
         
         <div className="flex-1 overflow-y-auto py-4">
           {cartItems.length === 0 ? (
-            <div className="flex h-full items-center justify-center text-center">
-              <p className="text-muted-foreground">Your cart is empty</p>
-            </div>
-          ) : (
             <div className="space-y-4">
               {cartItems.map((item) => (
                 <div
@@ -83,7 +79,7 @@ const CartSidebar = ({
                         aria-label="Remove from cart"
                         onClick={() => onRemoveFromCart(item.id)}
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4" 
                       </Button>
                     </div>
                   </div>
@@ -95,7 +91,7 @@ const CartSidebar = ({
 
         {cartItems.length > 0 && (
           <div className="space-y-4 border-t border-border pt-4">
-            <div className="flex items-center justify-between text-lg font-bold">
+            <className="flex items-center justify-between text-lg font-bold">
               <span>Total:</span>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 ${total.toFixed(2)}
