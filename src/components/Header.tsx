@@ -1,7 +1,6 @@
-import { ShoppingCart } from "lucide-react";
+tsx
+import { ShoppingCart, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// Fix: Correct import statement for icons (if needed)
-// No changes required here as import seems correct
 
 interface CartItem {
   id: string;
@@ -11,55 +10,32 @@ interface CartItem {
 }
 
 interface HeaderProps {
-  cartItems: CartItem[]; // Fix: Correct type definition for cartItems
-  cartItemsCount: number;
-  onCartClick: () => void;
-  onQuantityChange: (id: string, quantity: number) => void; // Add handler for quantity change
+  cartItems: CartItem[];
+  onUpdateQuantity: (id: string, quantity: number) => void;
+  onRemoveItem: (id: string) => void;
 }
 
-const Header = ({ cartItems, cartItemsCount, onCartClick, onQuantityChange }: HeaderProps) => {
+const CartSidebar = ({ cartItems, onUpdateQuantity, onRemoveItem }: HeaderProps) => {
   const handleQuantityChange = (id: string, quantity: number) => {
     if (quantity < 1) {
-      // Fix: Prevent quantity from going below 1
       return;
     }
-    onQuantityChange(id, quantity);
+    onUpdateQuantity(id, quantity);
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary/80" />
-          <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-            ShopHub
-          </h1>
-        </div>
-        
-        <Button
-          variant="outline"
-          size="icon"
-          className="relative"
-          onClick={onCartClick}
-        >
-          <ShoppingCart className="h-5 w-5" />
-          {cartItemsCount > 0 && (
-            <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-foreground">
-              {cartItemsCount}
-            </span>
-          )}
-        </Button>
-        {/* 
-          Add quantity controls and cart item list here
-          <div>
-            {cartItems.map((item) => (
-              <div key={item.id}>
-                <span>{item.name}</span>
+    <div className="cart-sidebar">
+      {cartItems.length > 0 ? (
+        <div className="cart-items">
+          {cartItems.map((item) => (
+            <div key={item.id} className="flex items-center justify-between">
+              <span>{item.name}</span>
+              <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                  disabled={item.quantity <= 1} // Fix: Disable minus button when quantity is 1
+                  disabled={item.quantity <= 1}
                 >
                   -
                 </Button>
@@ -71,13 +47,22 @@ const Header = ({ cartItems, cartItemsCount, onCartClick, onQuantityChange }: He
                 >
                   +
                 </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => onRemoveItem(item.id)}
+                >
+                  <Trash2 />
+                </Button>
               </div>
-            ))}
-          </div>
-        */}
-      </div>
-    </header>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>Your cart is empty</p>
+      )}
+    </div>
   );
 };
 
-export default Header;
+export default CartSidebar;
