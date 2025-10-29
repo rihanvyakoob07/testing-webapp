@@ -1,7 +1,5 @@
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// Fix: Correct import statement for icons (if needed)
-// No changes required here as import seems correct
 
 interface CartItem {
   id: string;
@@ -11,31 +9,27 @@ interface CartItem {
 }
 
 interface HeaderProps {
-  cartItems: CartItem[]; // Fix: Correct type definition for cartItems
+  cartItems: CartItem[];
   cartItemsCount: number;
   onCartClick: () => void;
-  onQuantityChange: (id: string, quantity: number) => void; // Add handler for quantity change
+  onUpdateQuantity: (id: string, quantity: number) => void;
 }
 
-const Header = ({ cartItems, cartItemsCount, onCartClick, onQuantityChange }: HeaderProps) => {
+const CartSidebar = ({ cartItems, cartItemsCount, onCartClick, onUpdateQuantity }: HeaderProps) => {
   const handleQuantityChange = (id: string, quantity: number) => {
     if (quantity < 1) {
-      // Fix: Prevent quantity from going below 1
       return;
     }
-    onQuantityChange(id, quantity);
+    onUpdateQuantity(id, quantity);
+  };
+
+  const handleRemoveItem = (id: string) => {
+    onUpdateQuantity(id, 0);
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary/80" />
-          <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-            ShopHub
-          </h1>
-        </div>
-        
+    <div className="cart-sidebar">
+      <div className="cart-sidebar-header">
         <Button
           variant="outline"
           size="icon"
@@ -49,35 +43,47 @@ const Header = ({ cartItems, cartItemsCount, onCartClick, onQuantityChange }: He
             </span>
           )}
         </Button>
-        {/* 
-          Add quantity controls and cart item list here
+      </div>
+      <div className="cart-sidebar-content">
+        {cartItems.length > 0 ? (
           <div>
             {cartItems.map((item) => (
-              <div key={item.id}>
+              <div key={item.id} className="flex items-center justify-between">
                 <span>{item.name}</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                  disabled={item.quantity <= 1} // Fix: Disable minus button when quantity is 1
-                >
-                  -
-                </Button>
-                <span>{item.quantity}</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                >
-                  +
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    disabled={item.quantity <= 1}
+                  >
+                    -
+                  </Button>
+                  <span>{item.quantity}</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                  >
+                    +
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleRemoveItem(item.id)}
+                  >
+                    <Trash2 />
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
-        */}
+        ) : (
+          <p>Your cart is empty</p>
+        )}
       </div>
-    </header>
+    </div>
   );
 };
 
-export default Header;
+export default CartSidebar;
