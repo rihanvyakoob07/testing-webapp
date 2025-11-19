@@ -1,0 +1,64 @@
+```python
+import json
+import unittest
+from unittest.mock import MagicMock
+from your_module import load_components  # Replace 'your_module' with actual module name
+
+class TestComponentsJSON(unittest.TestCase):
+
+    def setUp(self):
+        self.components_json = 'components.json'
+
+    def test_load_components_valid_json(self):
+        # Arrange
+        valid_json = '{"key": "value"}'
+        with open(self.components_json, 'w') as f:
+            f.write(valid_json)
+
+        # Act
+        components = load_components(self.components_json)
+
+        # Assert
+        self.assertEqual(components, json.loads(valid_json))
+
+    def test_load_components_invalid_json(self):
+        # Arrange
+        invalid_json = '{"key": "value"'
+        with open(self.components_json, 'w') as f:
+            f.write(invalid_json)
+
+        # Act and Assert
+        with self.assertRaises(json.JSONDecodeError):
+            load_components(self.components_json)
+
+    def test_load_components_empty_file(self):
+        # Arrange
+        open(self.components_json, 'w').close()
+
+        # Act and Assert
+        with self.assertRaises(json.JSONDecodeError):
+            load_components(self.components_json)
+
+    def test_load_components_non_existent_file(self):
+        # Arrange
+        non_existent_file = 'non_existent_file.json'
+
+        # Act and Assert
+        with self.assertRaises(FileNotFoundError):
+            load_components(non_existent_file)
+
+    def test_load_components_valid_empty_json(self):
+        # Arrange
+        valid_empty_json = '{}'
+        with open(self.components_json, 'w') as f:
+            f.write(valid_empty_json)
+
+        # Act
+        components = load_components(self.components_json)
+
+        # Assert
+        self.assertEqual(components, json.loads(valid_empty_json))
+
+if __name__ == '__main__':
+    unittest.main()
+```
