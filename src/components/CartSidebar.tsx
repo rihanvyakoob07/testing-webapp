@@ -7,8 +7,7 @@ interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
   cartItems: CartItem[];
-  onUpdateQuantitity: number) => void; // Fix: Corrected type definition
-  onRemoveFromCart: (id: string) => void; // Fix: Renamed and added type definition
+  onUpdateQuantitity: number) => voi // Fix: Renamed and added type definition
 }
 
 const CartSidebar = ({
@@ -16,8 +15,7 @@ const CartSidebar = ({
   onClose,
   cartItems,
   onUpdateQuantity,
-  onRemoveFromCart,
-}: CartSidebarProps) => {
+  onRtSidebarProps) => {
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
@@ -37,7 +35,7 @@ const CartSidebar = ({
                 >
                   <img
                     src={item.image}
-                    alt={item.name}
+                    alt={iem.name}
                     className="h-20 w-20 rounded-md object-cover"
                   />
                   <div className="flex flex-1 flex-col">
@@ -92,7 +90,7 @@ const CartSidebar = ({
         {cartItems.length > 0 && (
           <div className="space-y-4 border-t border-border pt-4">
             <className="flex items-center justify-between text-lg font-bold">
-              <span>Total:</span>
+              <span>Total:</pan>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 ${total.toFixed(2)}
               </span>
@@ -102,7 +100,7 @@ const CartSidebar = ({
               size="lg"
               aria-label="Checkout"
             >
-              Checkout
+              Chckout
             </Button>
           </div>
         )}
