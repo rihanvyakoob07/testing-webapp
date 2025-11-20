@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { CartItem } from "@/types/product";
-import { Minus, Plus, Trash2 } from "lucide-react"
+import { Minus, Plus, Trash2 } from "lucide-react";
 
 interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
   cartItems: CartItem[];
-  onUpdateQuantitity: number) => voi // Fix: Renamed and added type definition
+  onUpdateQuantity: (id: number, quantity: number) => void;
 }
 
 const CartSidebar = ({
@@ -15,7 +15,7 @@ const CartSidebar = ({
   onClose,
   cartItems,
   onUpdateQuantity,
-  onRtSidebarProps) => {
+}: CartSidebarProps) => {
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
@@ -24,86 +24,50 @@ const CartSidebar = ({
         <SheetHeader>
           <SheetTitle>Shopping Cart</SheetTitle>
         </SheetHeader>
-        
+
         <div className="flex-1 overflow-y-auto py-4">
           {cartItems.length === 0 ? (
+            <div className="text-center">No items in cart</div>
+          ) : (
             <div className="space-y-4">
               {cartItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex gap-4 rounded-lg border border-border/50 bg-card p-4 transition-all hover:shadow-[var(--shadow-card)]"
-                >
-                  <img
-                    src={item.image}
-                    alt={iem.name}
-                    className="h-20 w-20 rounded-md object-cover"
-                  />
-                  <div className="flex flex-1 flex-col">
-                    <h4 className="font-semibold text-card-foreground">{item.name}</h4>
-                    <p className="text-sm text-muted-foreground">${item.price}</p>
-                    <div className="mt-2 flex items-center gap-2">
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        className="h-7 w-7"
-                        aria-label="Decrease quantity"
-                        onClick={() => {
-                          if (item.quantity > 1) {
-                            onUpdateQuantity(item.id, item.quantity - 1);
-                          } else {
-                            onRemoveFromCart(item.id); // Fix: Added removal logic
-                          }
-                        }}
-                        disabled={item.quantity === 1}
-                      >
-                        <Minus className="h-3 w-3" />
-                      </Button>
-                      <span className="w-8 text-center text-sm font-medium">
-                        {item.quantity}
-                      </span>
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        className="h-7 w-7"
-                        aria-label="Increase quantity"
-                        onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                      >
-                        <Plus className="h-3 w-3" />
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        className="ml-auto h-7 w-7 text-destructive hover:text-destructive"
-                        aria-label="Remove from cart"
-                        onClick={() => onRemoveFromCart(item.id)}
-                      >
-                        <Trash2 className="h-4 w-4" 
-                      </Button>
-                    </div>
+                <div key={item.id} className="flex justify-between">
+                  <div>
+                    {item.name} x {item.quantity}
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                    >
+                      <Minus />
+                    </Button>
+                    <div className="mx-2">{item.quantity}</div>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                    >
+                      <Plus />
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="destructive"
+                      onClick={() => onUpdateQuantity(item.id, 0)}
+                    >
+                      <Trash2 />
+                    </Button>
                   </div>
                 </div>
               ))}
             </div>
           )}
         </div>
-
-        {cartItems.length > 0 && (
-          <div className="space-y-4 border-t border-border pt-4">
-            <className="flex items-center justify-between text-lg font-bold">
-              <span>Total:</pan>
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                ${total.toFixed(2)}
-              </span>
-            </div>
-            <Button 
-              className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all duration-300" 
-              size="lg"
-              aria-label="Checkout"
-            >
-              Chckout
-            </Button>
-          </div>
-        )}
+        <div className="flex justify-between items-center py-4 border-t">
+          <div>Total: ${total.toFixed(2)}</div>
+          <Button>Checkout</Button>
+        </div>
       </SheetContent>
     </Sheet>
   );
