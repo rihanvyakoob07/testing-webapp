@@ -1,7 +1,5 @@
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// Fix: Correct import statement for icons (if needed)
-// No changes required here as import seems correct
 
 interface CartItem {
   id: string;
@@ -11,16 +9,15 @@ interface CartItem {
 }
 
 interface HeaderProps {
-  cartItems: CartItem[]; // Fix: Correct type definition for cartItems
+  cartItems: CartItem[];
   cartItemsCount: number;
   onCartClick: () => void;
-  onQuantityChange: (id: string, quantity: number) => void; // Add handler for quantity change
+  onQuantityChange: (id: string, quantity: number) => void;
 }
 
 const Header = ({ cartItems, cartItemsCount, onCartClick, onQuantityChange }: HeaderProps) => {
   const handleQuantityChange = (id: string, quantity: number) => {
     if (quantity < 1) {
-      // Fix: Prevent quantity from going below 1
       return;
     }
     onQuantityChange(id, quantity);
@@ -49,32 +46,29 @@ const Header = ({ cartItems, cartItemsCount, onCartClick, onQuantityChange }: He
             </span>
           )}
         </Button>
-        {/* 
-          Add quantity controls and cart item list here
-          <div>
-            {cartItems.map((item) => (
-              <div key={item.id}>
-                <span>{item.name}</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                  disabled={item.quantity <= 1} // Fix: Disable minus button when quantity is 1
-                >
-                  -
-                </Button>
-                <span>{item.quantity}</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                >
-                  +
-                </Button>
-              </div>
-            ))}
-          </div>
-        */}
+        <div className="flex items-center gap-2">
+          {cartItems.map((item) => (
+            <div key={item.id} className="flex items-center gap-2">
+              <span>{item.name}</span>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                disabled={item.quantity <= 1}
+              >
+                -
+              </Button>
+              <span>{item.quantity}</span>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+              >
+                +
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
     </header>
   );

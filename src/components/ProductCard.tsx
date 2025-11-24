@@ -6,7 +6,7 @@ import { Plus, Minus } from "lucide-react";
 interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
-  onRemoveFromCart: (product: Product) => void;
+  onRemoveFromCart: (id: string) => void;
   cartItemQuantity: number;
   onUpdateQuantity: (quantity: number) => void;
 }
@@ -22,7 +22,7 @@ const ProductCard = ({
     const newQuantity = cartItemQuantity + change;
     if (newQuantity >= 0) {
       if (newQuantity === 0) {
-        onRemoveFromCart(product);
+        onRemoveFromCart(product.id);
       } else {
         onUpdateQuantity(newQuantity);
       }
