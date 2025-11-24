@@ -32,7 +32,6 @@ const ProductCard = ({
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-hover)] border-border/50">
       <div className="relative aspect-square overflow-hidden bg-muted">
-        {/* Fix: Added opening tag */}
         <div className="relative aspect-square overflow-hidden bg-muted">
           <img
             src={product.image}
@@ -42,20 +41,25 @@ const ProductCard = ({
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
       </div>
+
       <CardContent className="p-4">
         <div className="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
           {product.category}
         </div>
+
         <h3 className="mb-2 text-lg font-semibold text-foreground line-clamp-1">
           {product.name}
         </h3>
+
         <p className="mb-4 text-sm text-muted-foreground line-clamp-2">
           {product.description}
         </p>
+
         <div className="flex items-center justify-between">
           <span className="text-2xl font-bold text-foreground">
             ${product.price}
           </span>
+
           {cartItemQuantity > 0 ? (
             <div className="flex items-center gap-2">
               <Button
@@ -96,5 +100,4 @@ const ProductCard = ({
   );
 };
 
-// Fix: Corrected export statement
 export default ProductCard;
