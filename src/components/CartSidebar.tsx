@@ -44,7 +44,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
                   />
                   <div className="flex flex-1 flex-col">
                     <h4 className="font-semibold text-card-foreground">{item.name}</h4>
-                    <p className="text-sm text-muted-foreground">${item.price}</p>
+                    <p className="text-sm text-muted-foreground">${item.price.toFixed(2)}</p>
                     <div className="mt-2 flex items-center gap-2">
                       <Button
                         size="icon"
@@ -98,7 +98,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
             <div className="flex justify-between">
               <span>Total:</span>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                {total.toFixed(2)}
+                ${total.toFixed(2)}
               </span>
             </div>
             <Button
