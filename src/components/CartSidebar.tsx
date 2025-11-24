@@ -1,11 +1,11 @@
-
 import { Button } from "@/components/ui/button";
-impor { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { CartItem } from "@/types/poduct";
-import { Minus, Plus, Trash2 } from "lucide-react"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { CartItem } from "@/types/product";
+import { Minus, Plus, Trash2 } from "lucide-react";
+import React from "react";
 
 interface CartSidebarProps {
-  isOpen: bolean;
+  isOpen: boolean;
   onClose: () => void;
   cartItems: CartItem[];
   onUpdateQuantity: (id: string, quantity: number) => void;
@@ -68,12 +68,20 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
                         size="icon"
                         variant="outline"
                         className="h-7 w-7"
-                        arialabel="Increase quantity"
+                        aria-label="Increase quantity"
                         onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                      
+                      >
                         <Plus className="h-3 w-3" />
                       </Button>
                       <Button
+                        size="icon"
+                        variant="outline"
+                        className="h-7 w-7"
+                        aria-label="Remove from cart"
+                        onClick={() => onRemoveFromCart(item.id)}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -85,7 +93,8 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
         </div>
 
         {cartItems.length > 0 && (
-          <div className="space-y-4 border-t bordbetween text-lg font-bold">
+          <div className="space-y-4 border-t border-border/50 text-lg font-bold">
+            <div className="flex justify-between">
               <span>Total:</span>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 ${total.toFixed(2)}
