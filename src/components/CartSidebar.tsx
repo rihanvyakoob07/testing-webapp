@@ -1,3 +1,4 @@
+typescript
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { CartItem } from "@/types/product";
@@ -27,7 +28,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
         <SheetHeader>
           <SheetTitle>Shopping Cart</SheetTitle>
         </SheetHeader>
-        
+
         <div className="flex-1 overflow-y-auto py-4">
           {cartItems.length > 0 ? (
             <div className="space-y-4">
@@ -97,11 +98,11 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
             <div className="flex justify-between">
               <span>Total:</span>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                ${total.toFixed(2)}
+                {total.toFixed(2)}
               </span>
             </div>
-            <Button 
-              className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all duration-300" 
+            <Button
+              className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all duration-300"
               size="lg"
               aria-label="Checkout"
             >
