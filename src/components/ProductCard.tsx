@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Product } from "@/types/product";
+import { Product } from "@/types/product"
 import { Plus, Minus } from "lucide-react";
 
 interface ProductCardProps {
