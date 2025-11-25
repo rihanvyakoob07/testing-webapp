@@ -86,10 +86,10 @@ DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
 
 export {
   Drawer,
-  DrawerPortal,
-  DrawerOverlay,
   DrawerTrigger,
   DrawerClose,
+  DrawerPortal,
+  DrawerOverlay,
   DrawerContent,
   DrawerHeader,
   DrawerFooter,
