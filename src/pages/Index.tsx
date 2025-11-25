@@ -118,8 +118,9 @@ const Index = () => {
               key={product.id} 
               product={product} 
               onAddToCart={addToCart} 
+              cartItemQuantity={cartItems.find((i) => i.id === product.id)?.quantity ?? 0}
               onUpdateQuantity={(quantity) => updateQuantity(product.id, quantity)}
-              onRemoveFromCart={() => removeItem(product.id)}
+              onRemoveFromCart={removeItem}
             />
           ))}
         </div>
@@ -132,11 +133,8 @@ const Index = () => {
         // Fix: Correct type definition for cartItems prop (CartItem[])
         onUpdateQuantity={(id, quantity) => {
           updateQuantity(id, quantity);
-          // Fix: Update total price dynamically
-          // const updatedCartItems = cartItems.map((item) => (item.id === id ? { ...item, quantity } : item));
-          // const totalPrice = updatedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
         }}
-        onRemoveItem={removeItem}
+        onRemoveFromCart={removeItem}
       />
     </div>
   );
