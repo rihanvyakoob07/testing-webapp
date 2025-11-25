@@ -85,7 +85,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
                       <Button
                         size="icon"
                         variant="outline"
-                        className="h-7 w-7"
+                        className="h-7 w-7 ml-auto"
                         aria-label="Remove from cart"
                         onClick={() => onRemoveFromCart(item.id)}
                       >
