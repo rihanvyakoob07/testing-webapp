@@ -1,3 +1,4 @@
+typescript
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { CartItem } from "@/types/product";
@@ -76,7 +77,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
                       <Button
                         size="icon"
                         variant="outline"
-                        className="h-7 w-7"
+                        className="h-7 w-7 ml-auto"
                         aria-label="Remove from cart"
                         onClick={() => onRemoveFromCart(item.id)}
                       >
