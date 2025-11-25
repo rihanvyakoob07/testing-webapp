@@ -32,14 +32,12 @@ const ProductCard = ({
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-hover)] border-border/50">
       <div className="relative aspect-square overflow-hidden bg-muted">
-        <div className="relative aspect-square overflow-hidden bg-muted">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-        </div>
+        <img
+          src={product.image}
+          alt={product.name}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
 
       <CardContent className="p-4">

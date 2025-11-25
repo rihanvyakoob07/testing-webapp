@@ -1,3 +1,4 @@
+typescript
 import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 
@@ -45,7 +46,7 @@ const DrawerContent = React.forwardRef<
     </DrawerPrimitive.Content>
   </DrawerPortal>
 ));
-DrawerContent.displayName = "DrawerContent";
+DrawerContent.displayName = DrawerContent.displayName ?? "DrawerContent";
 
 const DrawerHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div

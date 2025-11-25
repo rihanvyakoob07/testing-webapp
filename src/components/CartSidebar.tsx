@@ -1,4 +1,4 @@
-
+typescript
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { CartItem } from "@/types/product";
@@ -40,8 +40,13 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="h-20 w-20 rounded-md object-cover"
+                    className={
+                      item.id === cartItems[0].id
+                        ? "h-32 w-32 -rotate-12 scale-150 opacity-70 object-contain border-4 border-red-500"
+                        : "h-20 w-20 rounded-md object-cover"
+                    }
                   />
+
                   <div className="flex flex-1 flex-col">
                     <h4 className="font-semibold text-card-foreground">{item.name}</h4>
                     <p className="text-sm text-muted-foreground">${item.price.toFixed(2)}</p>
@@ -62,9 +67,11 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
                       >
                         <Minus className="h-3 w-3" />
                       </Button>
+
                       <span className="w-8 text-center text-sm font-medium">
                         {item.quantity}
                       </span>
+
                       <Button
                         size="icon"
                         variant="outline"
@@ -74,6 +81,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
                       >
                         <Plus className="h-3 w-3" />
                       </Button>
+
                       <Button
                         size="icon"
                         variant="outline"
@@ -101,6 +109,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({
                 ${total.toFixed(2)}
               </span>
             </div>
+
             <Button
               className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all duration-300"
               size="lg"
